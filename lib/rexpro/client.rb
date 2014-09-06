@@ -52,12 +52,6 @@ module Rexpro
 					return resp
 				end
 				respones = Rexpro::Message.read_from(@socket).tap do |resp|
-					if @@responses[resp.request_uuid.bytes.to_a]
-						
-
-						return @@responses.delete(resp.request_uuid.bytes.to_a)
-					end
-
 					if resp.request_uuid.bytes.to_a == req.request_uuid.bytes.to_a
 						is_our_response = true
 						return resp
