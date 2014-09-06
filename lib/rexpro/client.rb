@@ -37,9 +37,13 @@ module Rexpro
     def request(req)
       
       req.write_to(@socket)
-      puts "_Request UUID: #{req.request_uuid.bytes.to_a.inspect}"
+      #puts "_Request UUID: #{req.request_uuid.bytes.to_a.inspect}"
+      puts "_Request Inspect:"
+      puts req.inspect 
       Rexpro::Message.read_from(@socket).tap do |resp|
-        puts "#Received UUID: #{resp.request_uuid.bytes.to_a.inspect}"
+        #puts "#Received UUID: #{resp.request_uuid.bytes.to_a.inspect}"
+        puts "#Received Inspect:"
+        puts resp.inspect
         if resp.request_uuid.bytes.to_a != req.request_uuid.bytes.to_a
           @socket.close
           raise Rexpro::RexproException,
