@@ -41,13 +41,19 @@ module Rexpro
 			is_our_response = false
 			
 			while !is_our_response
+				if @@responses[req.request_uuid.bytes.to_a]
+					resp = @@responses.delete(req.request_uuid.bytes.to_a)
+					if @@responses[req.request_uuid.bytes.to_a].is_a? Rexpro::Message::Error
+						err_msg = resp.error_message
+						err_msg << " [flag=#{resp.flag}]" if resp.flag
+						raise Rexpro::RexproError.new(err_msg)
+					end
+
+					return resp
+				end
 				respones = Rexpro::Message.read_from(@socket).tap do |resp|
 					if @@responses[resp.request_uuid.bytes.to_a]
-						if @@responses[resp.request_uuid.bytes.to_a].is_a? Rexpro::Message::Error
-							err_msg = resp.error_message
-							err_msg << " [flag=#{resp.flag}]" if resp.flag
-							raise Rexpro::RexproError.new(err_msg)
-						end
+						
 
 						return @@responses.delete(resp.request_uuid.bytes.to_a)
 					end
