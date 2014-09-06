@@ -54,8 +54,9 @@ module Rexpro
 
 					if resp.request_uuid.bytes.to_a == req.request_uuid.bytes.to_a
 						is_our_response = true
+						return resp
 					else
-						@@responses[resp.request_uuid.bytes.to_a] = responses
+						@@responses[resp.request_uuid.bytes.to_a] = resp
 					end
 				end
 			end
