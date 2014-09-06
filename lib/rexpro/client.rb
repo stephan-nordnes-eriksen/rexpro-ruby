@@ -59,14 +59,16 @@ module Rexpro
 						@@responses[resp.request_uuid.bytes.to_a] = resp
 					end
 				end
+				sleep 0.5
 			end
 
-			rescue TCPTimeout::SocketTimeout => ex
-				raise Rexpro::RexproException.new(ex)
-			rescue SystemCallError
-				# Lets not leave an open connection in a potentially bad state
-				@socket.close
-				raise
+			#Strange syntax. What is supposed to happen here?
+			# rescue TCPTimeout::SocketTimeout => ex
+			# 	raise Rexpro::RexproException.new(ex)
+			# rescue SystemCallError
+			# 	# Lets not leave an open connection in a potentially bad state
+			# 	@socket.close
+			# 	raise
 		end
 
 		def new_session(opts = {})
